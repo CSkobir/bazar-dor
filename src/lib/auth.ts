@@ -12,6 +12,36 @@ const isCloudMongo = Boolean(
       process.env.USE_MONGODB === 'true')
 );
 
+type DbRecord = Record<string, unknown>;
+type TMemDb = {
+  user: DbRecord[];
+  session: DbRecord[];
+  account: DbRecord[];
+  verification: DbRecord[];
+  [key: string]: DbRecord[];
+};
+
+declare global {
+  var __bazar_auth_db: TMemDb | undefined;
+}
+
+function toDate(val: unknown): Date {
+  if (val instanceof Date) return val;
+  if (typeof val === 'string' || typeof val === 'number') {
+    const d = new Date(val);
+    if (!isNaN(d.getTime())) return d;
+  }
+  return new Date();
+}
+
+function parseRecord(rec: Record<string, unknown>): Record<string, unknown> {
+  const r = { ...rec };
+  if ('createdAt' in r) r.createdAt = toDate(r.createdAt);
+  if ('updatedAt' in r) r.updatedAt = toDate(r.updatedAt);
+  if ('expiresAt' in r) r.expiresAt = toDate(r.expiresAt);
+  return r;
+}
+
 function getDatabaseAdapter() {
   if (isCloudMongo) {
     try {
@@ -24,37 +54,39 @@ function getDatabaseAdapter() {
     }
   }
 
+  // Reuse existing global singleton across hot module reloads
+  if (globalThis.__bazar_auth_db) {
+    return memoryAdapter(globalThis.__bazar_auth_db as unknown as MemoryDB);
+  }
+
   // Persistent in-memory storage for seamless local development
   const DB_FILE = path.join(process.cwd(), '.auth-dev-db.json');
-  type DbRecord = Record<string, unknown>;
-  const defaultDb: {
-    user: DbRecord[];
-    session: DbRecord[];
-    account: DbRecord[];
-    verification: DbRecord[];
-    [key: string]: DbRecord[];
-  } = { user: [], session: [], account: [], verification: [] };
+  const defaultDb: TMemDb = { user: [], session: [], account: [], verification: [] };
 
   let rawDb = defaultDb;
   try {
     if (fs.existsSync(DB_FILE)) {
       const parsed = JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
       rawDb = {
-        user: Array.isArray(parsed.user) ? parsed.user : [],
-        session: Array.isArray(parsed.session) ? parsed.session : [],
-        account: Array.isArray(parsed.account) ? parsed.account : [],
-        verification: Array.isArray(parsed.verification) ? parsed.verification : [],
+        user: Array.isArray(parsed.user) ? parsed.user.map(parseRecord) : [],
+        session: Array.isArray(parsed.session) ? parsed.session.map(parseRecord) : [],
+        account: Array.isArray(parsed.account) ? parsed.account.map(parseRecord) : [],
+        verification: Array.isArray(parsed.verification) ? parsed.verification.map(parseRecord) : [],
       };
     }
   } catch {
     rawDb = defaultDb;
   }
 
-  // Auto-save on process exit or periodic interval
+  globalThis.__bazar_auth_db = rawDb;
+
+  // Auto-save on periodic interval
   if (typeof setInterval !== 'undefined') {
     const timer = setInterval(() => {
       try {
-        fs.writeFileSync(DB_FILE, JSON.stringify(rawDb, null, 2), 'utf8');
+        if (globalThis.__bazar_auth_db) {
+          fs.writeFileSync(DB_FILE, JSON.stringify(globalThis.__bazar_auth_db, null, 2), 'utf8');
+        }
       } catch {}
     }, 1500);
     if (timer.unref) timer.unref();

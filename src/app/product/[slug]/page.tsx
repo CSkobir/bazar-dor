@@ -1,7 +1,7 @@
 import { auth } from '@/lib/auth';
 import { getProductByIdOrSlug } from '@/lib/api';
 import { formatTaka, formatUnit, toBengaliNumber } from '@/utils/formatters';
-import { headers } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
@@ -12,11 +12,23 @@ type TProductDetailsPageProps = {
 export default async function ProductDetailsPage({ params }: TProductDetailsPageProps) {
   const { slug } = await params;
 
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const cookieStore = await cookies();
+  const hasSessionCookie = cookieStore
+    .getAll()
+    .some(
+      (c) =>
+        c.name.includes('session_token') ||
+        c.name.includes('session_data') ||
+        c.name.includes('better-auth')
+    );
 
-  if (!session?.user) {
+  const session = await auth.api
+    .getSession({
+      headers: await headers(),
+    })
+    .catch(() => null);
+
+  if (!session?.user && !hasSessionCookie) {
     redirect(`/signin?callbackUrl=${encodeURIComponent(`/product/${slug}`)}`);
   }
 

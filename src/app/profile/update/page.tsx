@@ -15,7 +15,10 @@ export default function UpdateProfilePage() {
 
   useEffect(() => {
     if (!isPending && !user) {
-      router.replace('/signin?callbackUrl=/profile/update');
+      const hasCookie = typeof document !== 'undefined' && document.cookie.includes('session');
+      if (!hasCookie) {
+        router.replace('/signin?callbackUrl=/profile/update');
+      }
     }
   }, [user, isPending, router]);
 

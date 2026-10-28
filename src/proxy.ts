@@ -2,14 +2,22 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export async function proxy(request: NextRequest) {
-  // Check for Better Auth session token cookie
-  const sessionToken =
-    request.cookies.get('better-auth.session_token')?.value ||
-    request.cookies.get('__Secure-better-auth.session_token')?.value;
+  const { pathname } = request.nextUrl;
 
-  if (!sessionToken) {
+  // Check for Better Auth session token cookie
+  const allCookies = request.cookies.getAll();
+  const sessionCookie = allCookies.find(
+    (c) =>
+      c.name === 'better-auth.session_token' ||
+      c.name === '__Secure-better-auth.session_token' ||
+      c.name.endsWith('.session_token') ||
+      c.name.includes('session_token') ||
+      c.name.includes('session_data')
+  );
+
+  if (!sessionCookie || !sessionCookie.value) {
     const signInUrl = new URL('/signin', request.url);
-    signInUrl.searchParams.set('callbackUrl', request.nextUrl.pathname);
+    signInUrl.searchParams.set('callbackUrl', pathname);
     return NextResponse.redirect(signInUrl);
   }
 
@@ -17,5 +25,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/product/:path*', '/category/:path*', '/profile/:path*'],
+  matcher: ['/product/:path*', '/profile/:path*'],
 };

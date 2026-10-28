@@ -13,7 +13,10 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (!isPending && !user) {
-      router.replace('/signin?callbackUrl=/profile');
+      const hasCookie = typeof document !== 'undefined' && document.cookie.includes('session');
+      if (!hasCookie) {
+        router.replace('/signin?callbackUrl=/profile');
+      }
     }
   }, [user, isPending, router]);
 

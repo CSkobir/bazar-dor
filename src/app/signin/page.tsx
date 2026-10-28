@@ -2,12 +2,11 @@
 
 import { authClient } from '@/lib/auth-client';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { Suspense, useState } from 'react';
 import toast from 'react-hot-toast';
 
 function SignInContent() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/';
   const [loading, setLoading] = useState(false);
@@ -36,8 +35,7 @@ function SignInContent() {
         toast.error(error.message || 'লগইন ব্যর্থ হয়েছে। ইমেইল বা পাসওয়ার্ড ভুল।');
       } else {
         toast.success('সফলভাবে লগইন হয়েছে!');
-        router.push(callbackUrl);
-        router.refresh();
+        window.location.href = callbackUrl;
       }
     } catch {
       toast.error('সার্ভারে যোগাযোগ করতে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।');
