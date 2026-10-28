@@ -19,18 +19,15 @@ export default function HomeProductCatalog({
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sortOption, setSortOption] = useState<string>('default');
 
-  // Filter and sort products
   const filteredProducts = useMemo(() => {
     let result = [...products];
 
-    // Category filter
     if (selectedCategory !== 'all') {
       result = result.filter(
         (p) => p.category === selectedCategory || p.categoryNameBn === selectedCategory
       );
     }
 
-    // Search query filter
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
       result = result.filter(
@@ -41,7 +38,6 @@ export default function HomeProductCatalog({
       );
     }
 
-    // Sort by numeric price value (Challenge C1 requirement)
     if (sortOption === 'lowToHigh') {
       result.sort((a, b) => a.today - b.today);
     } else if (sortOption === 'highToLow') {
@@ -55,7 +51,6 @@ export default function HomeProductCatalog({
 
   return (
     <section id="সব-পণ্য" className="space-y-6 scroll-mt-28">
-      {/* Catalog Title Bar */}
       <div className="border-b-2 border-emerald-600 pb-3 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
         <div>
           <div className="flex items-center gap-2.5">
@@ -73,9 +68,7 @@ export default function HomeProductCatalog({
         </span>
       </div>
 
-      {/* Filter, Search, and Sort Toolbar */}
       <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
-        {/* Search Bar */}
         <div className="relative flex-1 max-w-md">
           <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">
             🔍
@@ -97,7 +90,6 @@ export default function HomeProductCatalog({
           )}
         </div>
 
-        {/* Sort Dropdown (Challenge C1) */}
         <div className="flex items-center gap-2 self-end lg:self-center text-xs">
           <label htmlFor="sort-dropdown" className="font-bold text-slate-700 whitespace-nowrap">
             সাজান:
@@ -117,7 +109,6 @@ export default function HomeProductCatalog({
         </div>
       </div>
 
-      {/* Category Pills Strip */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none text-xs font-semibold">
         <button
           onClick={() => setSelectedCategory('all')}
@@ -148,7 +139,6 @@ export default function HomeProductCatalog({
         })}
       </div>
 
-      {/* Grid of Product Cards */}
       {filteredProducts.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {filteredProducts.map((product) => (

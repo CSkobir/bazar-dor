@@ -2,11 +2,12 @@
 
 import { authClient } from '@/lib/auth-client';
 import { TCategory } from '@/types/category';
-import { getBengaliDate } from '@/utils/formatters';
+import { getBengaliDateTime } from '@/utils/formatters';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import GuardedLink from './GuardedLink';
 
 const INITIAL_CATEGORIES: TCategory[] = [
   { id: '1', slug: 'rice', nameBn: 'চাল', icon: '🍚' },
@@ -59,13 +60,12 @@ export default function Navbar() {
     }
   };
 
-  const [banglaDate, setBanglaDate] = useState<string>(() => getBengaliDate());
+  const [banglaClock, setBanglaClock] = useState({ date: '', time: '' });
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setBanglaDate(getBengaliDate(new Date()));
-    }, 10000);
-
+    const tick = () => setBanglaClock(getBengaliDateTime(new Date()));
+    tick();
+    const timer = setInterval(tick, 1000);
     return () => clearInterval(timer);
   }, []);
 
@@ -89,8 +89,15 @@ export default function Navbar() {
                 LIVE
               </span>
             </div>
-            <p className="text-[11px] text-slate-500 font-medium" suppressHydrationWarning>
-              {banglaDate}
+            <p className="text-[11px] text-slate-500 font-medium leading-tight min-h-[2.25rem]" suppressHydrationWarning>
+              {banglaClock.date ? (
+                <>
+                  <span className="block">{banglaClock.date}</span>
+                  <span className="block text-emerald-700 font-bold tabular-nums">{banglaClock.time}</span>
+                </>
+              ) : (
+                <span className="block text-slate-400">তারিখ লোড হচ্ছে…</span>
+              )}
             </p>
           </div>
         </Link>
@@ -199,19 +206,20 @@ export default function Navbar() {
           </Link>
           {categories.map((cat) => {
             const isActive = pathname === `/category/${cat.slug}`;
+            const className = `px-3.5 py-1.5 rounded-full whitespace-nowrap transition-all flex items-center gap-1.5 ${
+              isActive
+                ? 'bg-emerald-600 text-white shadow-xs font-bold'
+                : 'text-slate-600 hover:bg-slate-200/70 hover:text-slate-900 font-medium'
+            }`;
             return (
-              <Link
+              <GuardedLink
                 key={cat.id || cat.slug}
                 href={`/category/${cat.slug}`}
-                className={`px-3.5 py-1.5 rounded-full whitespace-nowrap transition-all flex items-center gap-1.5 ${
-                  isActive
-                    ? 'bg-emerald-600 text-white shadow-xs font-bold'
-                    : 'text-slate-600 hover:bg-slate-200/70 hover:text-slate-900 font-medium'
-                }`}
+                className={className}
               >
                 <span>{cat.icon}</span>
                 <span>{cat.nameBn}</span>
-              </Link>
+              </GuardedLink>
             );
           })}
         </nav>

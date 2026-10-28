@@ -84,10 +84,8 @@ export default function SignUpPage() {
   return (
     <div className="min-h-[calc(100vh-160px)] flex flex-col items-center justify-center py-12 px-4 bg-gradient-to-b from-emerald-50/40 via-slate-50/50 to-teal-50/40">
       <div className="card w-full max-w-md bg-white shadow-xl shadow-slate-200/50 border border-slate-200/90 p-8 rounded-3xl relative overflow-hidden">
-        {/* Top subtle color strip */}
         <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500"></div>
 
-        {/* Brand & Header adhering to Figma */}
         <div className="text-center mb-6 pt-2">
           <Link
             href="/"
@@ -104,7 +102,6 @@ export default function SignUpPage() {
           </p>
         </div>
 
-        {/* Registration Form */}
         <form onSubmit={handleSubmit} className="space-y-3.5">
           <div className="space-y-1">
             <label className="block font-bold text-xs text-slate-700">নাম</label>
@@ -159,7 +156,6 @@ export default function SignUpPage() {
           </button>
         </form>
 
-        {/* Divider */}
         <div className="relative my-5 text-center">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-slate-200"></div>
@@ -167,7 +163,6 @@ export default function SignUpPage() {
           <span className="relative bg-white px-3 text-[11px] font-bold text-slate-400">অথবা</span>
         </div>
 
-        {/* Social Buttons */}
         <div className="grid grid-cols-2 gap-3">
           <button
             type="button"
@@ -186,7 +181,6 @@ export default function SignUpPage() {
           </button>
         </div>
 
-        {/* Link to Sign In */}
         <p className="text-center text-xs text-slate-500 mt-5 pt-4 border-t border-slate-100">
           অ্যাকাউন্ট আছে?{' '}
           <Link href="/signin" className="text-emerald-600 hover:text-emerald-700 font-bold underline ml-1">

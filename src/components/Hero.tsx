@@ -3,12 +3,10 @@ import Image from 'next/image';
 export default function Hero() {
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-emerald-50/60 via-slate-50/40 to-white border-b border-slate-200/80 py-10 sm:py-16">
-      {/* Background Decorative Radial Glows */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-emerald-200/25 rounded-full blur-3xl pointer-events-none -z-10"></div>
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-teal-200/20 rounded-full blur-3xl pointer-events-none -z-10"></div>
 
       <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-        {/* Left Column: Heading, Subtitle, Stats & CTA */}
         <div className="lg:col-span-7 space-y-6">
           <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-md text-emerald-800 text-xs font-bold px-3.5 py-1.5 rounded-full border border-emerald-200/80 shadow-2xs">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -27,7 +25,6 @@ export default function Hero() {
             সর্বশেষ যাচাইকৃত বাজার দর, গড় মূল্য এবং মূল্য ওঠানামা এক নজরে পর্যবেক্ষণ করুন।
           </p>
 
-          {/* Stat Chips from Figma */}
           <div className="grid grid-cols-3 gap-3 max-w-md pt-2">
             <div className="bg-white/90 backdrop-blur-md p-3 rounded-2xl border border-slate-200 shadow-2xs text-center sm:text-left">
               <span className="text-xl sm:text-2xl font-black text-emerald-600 block">৩৩</span>
@@ -48,7 +45,6 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* CTA Anchor Button */}
           <div className="pt-2 flex flex-wrap items-center gap-3">
             <a
               href="#সব-পণ্য"
@@ -65,7 +61,6 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Right Column: Hero Graphic Banner Image */}
         <div className="lg:col-span-5 flex justify-center">
           <div className="relative w-full max-w-md">
             <div className="relative rounded-3xl overflow-hidden border border-emerald-100 bg-white/80 p-3 shadow-xl">

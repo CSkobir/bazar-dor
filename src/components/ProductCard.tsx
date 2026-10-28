@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import GuardedLink from '@/components/GuardedLink';
 import { TProduct } from '@/types/product';
 import { formatTaka, formatUnit, toBengaliNumber } from '@/utils/formatters';
 
@@ -15,12 +15,11 @@ export default function ProductCard({ product }: TProductCardProps) {
   const pctBn = toBengaliNumber(pct.toFixed(1));
 
   return (
-    <Link
+    <GuardedLink
       href={`/product/${product.id}`}
       className="group block h-full focus:outline-hidden"
     >
       <div className="bg-white border border-slate-200/90 hover:border-emerald-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 rounded-2xl p-4 sm:p-5 h-full flex flex-col justify-between relative overflow-hidden">
-        {/* Top subtle color strip */}
         <div
           className={`absolute top-0 left-0 right-0 h-1 transition-colors ${
             isUp
@@ -31,7 +30,6 @@ export default function ProductCard({ product }: TProductCardProps) {
           }`}
         ></div>
 
-        {/* Top: Icon + Category Badge */}
         <div>
           <div className="flex items-start justify-between gap-2 mb-3 pt-1">
             <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-2xl sm:text-3xl group-hover:scale-108 group-hover:bg-emerald-50/70 transition-all duration-300 shadow-2xs shrink-0">
@@ -45,18 +43,15 @@ export default function ProductCard({ product }: TProductCardProps) {
             </div>
           </div>
 
-          {/* Product Name */}
           <h3 className="font-black text-slate-900 group-hover:text-emerald-700 transition-colors text-base sm:text-lg leading-snug line-clamp-1">
             {product.nameBn}
           </h3>
 
-          {/* Unit Line */}
           <p className="text-xs text-slate-400 font-medium mt-1">
             {formatUnit(product.unit)} • <span className="text-slate-500">জাতীয় গড় রেট</span>
           </p>
         </div>
 
-        {/* Bottom Price Row: আজকের দাম + Value + Change Badge */}
         <div className="mt-4 pt-3 border-t border-slate-100 flex items-end justify-between gap-2">
           <div>
             <span className="text-[10px] text-slate-400 font-semibold block uppercase tracking-wider">
@@ -67,7 +62,6 @@ export default function ProductCard({ product }: TProductCardProps) {
             </span>
           </div>
 
-          {/* Change Pill Badge */}
           <div
             className={`text-xs font-black px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-2xs whitespace-nowrap ${
               isUp
@@ -84,6 +78,6 @@ export default function ProductCard({ product }: TProductCardProps) {
           </div>
         </div>
       </div>
-    </Link>
+    </GuardedLink>
   );
 }

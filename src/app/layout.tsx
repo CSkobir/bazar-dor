@@ -35,18 +35,14 @@ export default function RootLayout({
     <html lang="bn" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body suppressHydrationWarning className="min-h-full flex flex-col bg-slate-50/50 text-slate-800 font-sans">
         <ToastProvider />
-        {/* Navbar */}
         <Suspense fallback={<div className="h-20 bg-white border-b border-slate-200"></div>}>
           <Navbar />
         </Suspense>
 
-        {/* Live Market Marquee Strip */}
         <MarqueeComp />
 
-        {/* Main Application Body */}
         <main className="flex-1">{children}</main>
 
-        {/* Footer */}
         <Footer />
       </body>
     </html>

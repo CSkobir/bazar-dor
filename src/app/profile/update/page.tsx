@@ -58,7 +58,6 @@ export default function UpdateProfilePage() {
 
     setLoading(true);
     try {
-      // Better Auth update user API (Challenge C3 requirement)
       const res = await authClient.updateUser({
         name: name.trim(),
       });

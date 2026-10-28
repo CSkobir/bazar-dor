@@ -24,10 +24,8 @@ export default async function HomePage() {
 
   return (
     <div className="bg-slate-50/40 min-h-screen">
-      {/* 1. Hero Section with Banner Image, Badges & CTA */}
       <Hero />
 
-      {/* 2. Market Pulse Metrics Strip */}
       <div className="max-w-6xl mx-auto px-4 -mt-6 relative z-10">
         <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200/90 shadow-md p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
           <div className="flex items-center gap-3">
@@ -75,7 +73,6 @@ export default async function HomePage() {
       </div>
 
       <div className="max-w-6xl mx-auto px-4 py-12 space-y-16">
-        {/* 3. Section A & B: আজকের মার্কেট মুভার্স — Side-by-Side 2-Column Layout */}
         <section id="মার্কেট-মুভার্স" className="space-y-6 scroll-mt-24">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-200 gap-2">
             <div>
@@ -103,9 +100,7 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* 2-Column Comparative Layout */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
-            {/* Left Column: Section A — আজ দাম বেড়েছে ▲ */}
             <div className="bg-gradient-to-b from-emerald-50/60 to-white rounded-3xl p-5 sm:p-6 border border-emerald-200/80 shadow-xs space-y-4">
               <div className="flex items-center justify-between pb-3 border-b border-emerald-200/80">
                 <div className="flex items-center gap-2">
@@ -127,7 +122,6 @@ export default async function HomePage() {
               </div>
             </div>
 
-            {/* Right Column: Section B — আজ দাম কমেছে ▼ */}
             <div className="bg-gradient-to-b from-rose-50/60 to-white rounded-3xl p-5 sm:p-6 border border-rose-200/80 shadow-xs space-y-4">
               <div className="flex items-center justify-between pb-3 border-b border-rose-200/80">
                 <div className="flex items-center gap-2">
@@ -151,7 +145,6 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* 4. Smart Buyer Interstitial Banner */}
         <div className="bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-emerald-500/10 border border-emerald-200/80 rounded-3xl p-6 sm:p-7 flex flex-col md:flex-row items-center justify-between gap-4 shadow-2xs">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-2xl bg-white shadow-xs flex items-center justify-center text-2xl shrink-0">
@@ -175,7 +168,6 @@ export default async function HomePage() {
           </a>
         </div>
 
-        {/* 5. Section C: সব পণ্য (#সব-পণ্য Anchor Target) */}
         <HomeProductCatalog products={products} categories={categories} />
       </div>
     </div>

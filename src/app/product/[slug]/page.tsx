@@ -60,7 +60,6 @@ export default async function ProductDetailsPage({ params }: TProductDetailsPage
   const isDown = product.change?.dir === 'down';
   const pctBn = toBengaliNumber((product.change?.pct ?? 0).toFixed(1));
 
-  // Compute market summary metrics
   const markets = product.markets || [];
   const minVal = markets.length > 0 ? Math.min(...markets.map((m) => m.min)) : product.today;
   const maxVal = markets.length > 0 ? Math.max(...markets.map((m) => m.max)) : product.today;
@@ -80,7 +79,6 @@ export default async function ProductDetailsPage({ params }: TProductDetailsPage
   return (
     <div className="bg-slate-50/40 min-h-screen py-8 sm:py-10">
       <div className="max-w-5xl mx-auto px-4 space-y-8">
-        {/* Breadcrumb Navigation */}
         <nav className="text-xs text-slate-500 flex items-center gap-2 flex-wrap">
           <Link href="/" className="hover:text-emerald-600 transition-colors font-medium">
             হোম
@@ -98,10 +96,8 @@ export default async function ProductDetailsPage({ params }: TProductDetailsPage
           </span>
         </nav>
 
-        {/* Top Product Summary & Price Range Banner matching Figma */}
         <div className="bg-white border border-slate-200/90 p-6 sm:p-8 rounded-3xl shadow-xs space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
-            {/* Left: Product Icon, Title, and Subtitle */}
             <div className="lg:col-span-7 flex items-start gap-5">
               <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-emerald-50 to-teal-50 border border-emerald-200/80 flex items-center justify-center text-4xl shadow-xs shrink-0">
                 {product.image || product.categoryIcon || '🛒'}
@@ -131,7 +127,6 @@ export default async function ProductDetailsPage({ params }: TProductDetailsPage
               </div>
             </div>
 
-            {/* Right: National Average & Change Highlight Card */}
             <div className="lg:col-span-5 bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 text-white p-5 rounded-2xl shadow-lg space-y-3">
               <div className="flex items-center justify-between text-xs text-slate-300">
                 <span className="font-medium">আজকের জাতীয় গড় রেট</span>
@@ -162,7 +157,6 @@ export default async function ProductDetailsPage({ params }: TProductDetailsPage
                 </span>
               </div>
 
-              {/* Price Range Meter */}
               <div className="space-y-1.5 pt-1">
                 <div className="w-full bg-slate-700 rounded-full h-2 overflow-hidden flex">
                   <div className="bg-emerald-400 h-full w-[40%]"></div>
@@ -178,7 +172,6 @@ export default async function ProductDetailsPage({ params }: TProductDetailsPage
           </div>
         </div>
 
-        {/* 3 Price Summary Cards (Figma Screen Requirement) */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="bg-white border border-slate-200 border-t-4 border-t-emerald-500 p-5 rounded-2xl shadow-xs space-y-2">
             <div className="flex items-center justify-between">
@@ -226,7 +219,6 @@ export default async function ProductDetailsPage({ params }: TProductDetailsPage
           </div>
         </div>
 
-        {/* বাজারভিত্তিক আজকের দাম Table (Figma Screen 4) */}
         <div className="bg-white border border-slate-200 rounded-3xl shadow-xs p-6 sm:p-7 space-y-4 overflow-hidden">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 gap-2">
             <div>

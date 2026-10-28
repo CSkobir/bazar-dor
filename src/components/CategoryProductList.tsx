@@ -45,13 +45,11 @@ export default function CategoryProductList({ products }: TCategoryProductListPr
 
   return (
     <div className="space-y-6">
-      {/* Filter and Sort Toolbar */}
       <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <span className="text-xs text-slate-600 font-bold">
           মোট <strong className="text-slate-900 font-black">{toBengaliNumber(products.length)}</strong>টি পণ্য তালিকাভুক্ত
         </span>
 
-        {/* Challenge C1: Sort control */}
         <div className="flex items-center gap-2 text-xs">
           <label htmlFor="cat-sort" className="font-bold text-slate-700 whitespace-nowrap">
             সাজান:
@@ -69,7 +67,6 @@ export default function CategoryProductList({ products }: TCategoryProductListPr
         </div>
       </div>
 
-      {/* Grid of Product Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
         {sortedProducts.map((product) => (
           <ProductCard key={product.id} product={product} />

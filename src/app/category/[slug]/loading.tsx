@@ -3,7 +3,6 @@ import SkeletonCard from '@/components/SkeletonCard';
 export default function CategoryLoading() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-10 space-y-8">
-      {/* Category Header Skeleton */}
       <div className="bg-white border border-slate-200 rounded-3xl p-8 animate-pulse flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 bg-slate-200 rounded-2xl"></div>
@@ -15,7 +14,6 @@ export default function CategoryLoading() {
         <div className="w-28 h-8 bg-slate-200 rounded-full"></div>
       </div>
 
-      {/* Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
         {Array.from({ length: 8 }).map((_, i) => (
           <SkeletonCard key={i} />

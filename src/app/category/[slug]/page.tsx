@@ -44,7 +44,6 @@ export default async function CategoryPage({ params }: TCategoryPageProps) {
   return (
     <div className="bg-slate-50/40 min-h-screen py-8 sm:py-10">
       <div className="max-w-6xl mx-auto px-4 space-y-8">
-        {/* Breadcrumb Navigation */}
         <nav className="text-xs text-slate-500 flex items-center gap-2">
           <Link href="/" className="hover:text-emerald-600 transition-colors font-medium">
             হোম
@@ -57,7 +56,6 @@ export default async function CategoryPage({ params }: TCategoryPageProps) {
           </span>
         </nav>
 
-        {/* Category Header Banner adhering to Figma */}
         <div className="bg-gradient-to-r from-emerald-50 via-white to-teal-50 border border-slate-200 p-6 sm:p-8 rounded-3xl shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-5">
             <div className="w-18 h-18 rounded-2xl bg-white border border-emerald-200/80 flex items-center justify-center text-4xl shadow-xs shrink-0">
@@ -87,7 +85,6 @@ export default async function CategoryPage({ params }: TCategoryPageProps) {
           </div>
         </div>
 
-        {/* Product Cards List with Custom Sorting Toolbar */}
         <CategoryProductList products={products} />
       </div>
     </div>

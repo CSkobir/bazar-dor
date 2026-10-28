@@ -3,13 +3,19 @@
 import { authClient } from '@/lib/auth-client';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Suspense, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 function SignInContent() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/';
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get('reason') === 'protected') {
+      toast.error('লগইন ছাড়া শুধু হোমপেজ দেখা যায়। বিস্তারিত পাতার জন্য সাইন ইন করুন।');
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -68,10 +74,8 @@ function SignInContent() {
 
   return (
     <div className="card w-full max-w-md bg-white shadow-xl shadow-slate-200/50 border border-slate-200/90 p-8 rounded-3xl relative overflow-hidden">
-      {/* Top subtle color strip */}
       <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500"></div>
 
-      {/* Header matching Figma */}
       <div className="text-center mb-6 pt-2">
         <Link
           href="/"
@@ -88,7 +92,6 @@ function SignInContent() {
         </p>
       </div>
 
-      {/* Sign In Form */}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-1.5">
           <label className="block font-bold text-xs text-slate-700">ইমেইল</label>
@@ -121,7 +124,6 @@ function SignInContent() {
         </button>
       </form>
 
-      {/* Divider */}
       <div className="relative my-6 text-center">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-slate-200"></div>
@@ -129,7 +131,6 @@ function SignInContent() {
         <span className="relative bg-white px-3 text-[11px] font-bold text-slate-400">অথবা</span>
       </div>
 
-      {/* Social Login Buttons adhering to Figma */}
       <div className="grid grid-cols-2 gap-3">
         <button
           type="button"
@@ -148,7 +149,6 @@ function SignInContent() {
         </button>
       </div>
 
-      {/* Link to Register */}
       <p className="text-center text-xs text-slate-500 mt-6 pt-4 border-t border-slate-100">
         অ্যাকাউন্ট নেই?{' '}
         <Link href="/signup" className="text-emerald-600 hover:text-emerald-700 font-bold underline ml-1">

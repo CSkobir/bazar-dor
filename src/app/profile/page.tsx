@@ -63,16 +63,13 @@ export default function ProfilePage() {
   return (
     <div className="min-h-[calc(100vh-160px)] bg-slate-50/40 py-12 px-4 flex items-center justify-center">
       <div className="w-full max-w-md bg-white border border-slate-200/90 shadow-xl rounded-3xl overflow-hidden">
-        {/* Banner Gradient Strip */}
         <div className="h-28 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 relative">
           <div className="absolute top-3 right-4 bg-white/20 backdrop-blur-md text-white text-[10px] font-black px-2.5 py-1 rounded-full border border-white/30">
             সক্রিয় সদস্য
           </div>
         </div>
 
-        {/* Content Body */}
         <div className="px-6 sm:px-8 pb-8 pt-0 -mt-12 text-center space-y-5">
-          {/* Avatar with Ring */}
           <div className="avatar mx-auto">
             <div className="w-24 h-24 rounded-full ring-4 ring-white shadow-lg overflow-hidden bg-gradient-to-tr from-emerald-500 to-teal-600 flex items-center justify-center text-3xl font-black text-white">
               {user.image ? (
@@ -83,7 +80,6 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          {/* User Details */}
           <div>
             <div className="flex items-center justify-center gap-2">
               <h1 className="text-2xl font-black text-slate-900 tracking-tight">
@@ -97,7 +93,6 @@ export default function ProfilePage() {
             <p className="text-[11px] text-slate-400 mt-1">আপনার অ্যাকাউন্টের তথ্য এখানে দেখুন।</p>
           </div>
 
-          {/* Action Buttons (Requirement C3: Link to Update Information route) */}
           <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
               href="/profile/update"

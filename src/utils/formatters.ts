@@ -84,3 +84,36 @@ export function getBengaliDate(date: Date = new Date()): string {
 
   return `${dayName}, ${dayNum} ${monthName}, ${yearNum}`;
 }
+
+function toBengaliPadded(num: number, width = 2): string {
+  return toBengaliNumber(num).padStart(width, '০');
+}
+
+export function getBengaliTime(date: Date = new Date()): string {
+  try {
+    const formatted = date.toLocaleTimeString('bn-BD', {
+      hour: 'numeric',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+    });
+    if (/[০-৯]/.test(formatted)) {
+      return formatted;
+    }
+  } catch {}
+
+  const d = date instanceof Date && !isNaN(date.getTime()) ? date : new Date();
+  let hours = d.getHours();
+  const period = hours >= 12 ? 'অপরাহ্ন' : 'পূর্বাহ্ন';
+  hours = hours % 12 || 12;
+
+  return `${toBengaliNumber(hours)}:${toBengaliPadded(d.getMinutes())}:${toBengaliPadded(d.getSeconds())} ${period}`;
+}
+
+export function getBengaliDateTime(date: Date = new Date()): { date: string; time: string } {
+  const d = date instanceof Date && !isNaN(date.getTime()) ? date : new Date();
+  return {
+    date: getBengaliDate(d),
+    time: getBengaliTime(d),
+  };
+}
