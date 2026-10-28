@@ -3,7 +3,7 @@
 import { authClient, useSession } from '@/lib/auth-client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 export default function UpdateProfilePage() {
@@ -12,6 +12,12 @@ export default function UpdateProfilePage() {
   const router = useRouter();
   const [name, setName] = useState(user?.name || '');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!isPending && !user) {
+      router.replace('/signin?callbackUrl=/profile/update');
+    }
+  }, [user, isPending, router]);
 
   if (isPending) {
     return (

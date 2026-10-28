@@ -3,12 +3,19 @@
 import { authClient, useSession } from '@/lib/auth-client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 
 export default function ProfilePage() {
   const { data: session, isPending } = useSession();
   const user = session?.user;
   const router = useRouter();
+
+  useEffect(() => {
+    if (!isPending && !user) {
+      router.replace('/signin?callbackUrl=/profile');
+    }
+  }, [user, isPending, router]);
 
   if (isPending) {
     return (

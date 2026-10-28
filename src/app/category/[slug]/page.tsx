@@ -1,7 +1,10 @@
+import { auth } from '@/lib/auth';
 import CategoryProductList from '@/components/CategoryProductList';
 import { getAllProducts, getCategoryBySlug } from '@/lib/api';
 import { toBengaliNumber } from '@/utils/formatters';
+import { headers } from 'next/headers';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 type TCategoryPageProps = {
   params: Promise<{ slug: string }>;
@@ -9,6 +12,15 @@ type TCategoryPageProps = {
 
 export default async function CategoryPage({ params }: TCategoryPageProps) {
   const { slug } = await params;
+
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session?.user) {
+    redirect(`/signin?callbackUrl=${encodeURIComponent(`/category/${slug}`)}`);
+  }
+
   const [category, products] = await Promise.all([
     getCategoryBySlug(slug),
     getAllProducts(slug),

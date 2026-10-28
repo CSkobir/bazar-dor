@@ -1,22 +1,13 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { auth } from './lib/auth';
-import { headers } from 'next/headers';
 
 export async function proxy(request: NextRequest) {
-  try {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
-    const user = session?.user;
+  // Check for Better Auth session token cookie
+  const sessionToken =
+    request.cookies.get('better-auth.session_token')?.value ||
+    request.cookies.get('__Secure-better-auth.session_token')?.value;
 
-    if (!user) {
-      const signInUrl = new URL('/signin', request.url);
-      signInUrl.searchParams.set('callbackUrl', request.nextUrl.pathname);
-      return NextResponse.redirect(signInUrl);
-    }
-  } catch {
-    // Fallback if session check cannot connect
+  if (!sessionToken) {
     const signInUrl = new URL('/signin', request.url);
     signInUrl.searchParams.set('callbackUrl', request.nextUrl.pathname);
     return NextResponse.redirect(signInUrl);
@@ -26,5 +17,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/product/:path*', '/profile/:path*'],
+  matcher: ['/product/:path*', '/category/:path*', '/profile/:path*'],
 };

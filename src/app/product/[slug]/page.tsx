@@ -1,6 +1,9 @@
+import { auth } from '@/lib/auth';
 import { getProductByIdOrSlug } from '@/lib/api';
 import { formatTaka, formatUnit, toBengaliNumber } from '@/utils/formatters';
+import { headers } from 'next/headers';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 type TProductDetailsPageProps = {
   params: Promise<{ slug: string }>;
@@ -8,6 +11,15 @@ type TProductDetailsPageProps = {
 
 export default async function ProductDetailsPage({ params }: TProductDetailsPageProps) {
   const { slug } = await params;
+
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session?.user) {
+    redirect(`/signin?callbackUrl=${encodeURIComponent(`/product/${slug}`)}`);
+  }
+
   const product = await getProductByIdOrSlug(slug);
 
   if (!product) {
