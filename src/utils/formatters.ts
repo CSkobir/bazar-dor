@@ -11,10 +11,6 @@ const BENGALI_NUMERALS: { [key: string]: string } = {
   '9': '৯',
 };
 
-/**
- * Converts English number or string to Bengali numerals with comma separators.
- * Example: 1850 -> "১,৮৫০", 2.5 -> "২.৫"
- */
 export function toBengaliNumber(num: number | string | null | undefined): string {
   if (num === null || num === undefined || isNaN(Number(num))) return '০';
 
@@ -29,18 +25,10 @@ export function toBengaliNumber(num: number | string | null | undefined): string
   return integerPart;
 }
 
-/**
- * Formats price in Taka with Bengali numerals.
- * Example: 148 -> "১৪৮ টাকা"
- */
 export function formatTaka(price: number | string): string {
   return `${toBengaliNumber(price)} টাকা`;
 }
 
-/**
- * Formats unit name to Bengali standard.
- * Example: "kg" -> "প্রতি কেজি", "liter" -> "প্রতি লিটার"
- */
 export function formatUnit(unit: string): string {
   if (!unit) return 'প্রতি একক';
   const u = unit.toLowerCase().trim();
@@ -51,11 +39,6 @@ export function formatUnit(unit: string): string {
   return `প্রতি ${unit}`;
 }
 
-/**
- * Formats date dynamically into standard Bengali date format.
- * Dynamically computes weekday, day, month, and year from the live date object.
- * Example: "বৃহস্পতিবার, ২৯ অক্টোবর, ২০২৬"
- */
 export function getBengaliDate(date: Date = new Date()): string {
   try {
     const formatted = date.toLocaleDateString('bn-BD', {
@@ -64,13 +47,11 @@ export function getBengaliDate(date: Date = new Date()): string {
       month: 'long',
       year: 'numeric',
     });
-    // Check that it returned Bengali characters and not raw english
     if (/[০-৯]/.test(formatted)) {
       return formatted;
     }
   } catch {}
 
-  // Pure dynamic fallback for any environment
   const weekdays = [
     'রবিবার',
     'সোমবার',

@@ -5,7 +5,6 @@ import fallbackProductsData from './fallback-products.json';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://openapi.programming-hero.com/api/bazardor';
 
-// In-memory cache seeded with fallback data for instant zero-latency responses
 let cachedCategories: { data: TCategory[]; timestamp: number } = {
   data: fallbackCategoriesData as TCategory[],
   timestamp: Date.now(),
@@ -14,11 +13,8 @@ let cachedProducts: { data: TProduct[]; timestamp: number } = {
   data: fallbackProductsData as unknown as TProduct[],
   timestamp: Date.now(),
 };
-const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+const CACHE_TTL = 5 * 60 * 1000;
 
-/**
- * Fetch from API with 2.5s timeout and automatic fallback
- */
 async function fetchWithFallback<T>(endpoint: string, options?: RequestInit): Promise<T | null> {
   try {
     const url = `${API_BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
@@ -30,15 +26,10 @@ async function fetchWithFallback<T>(endpoint: string, options?: RequestInit): Pr
     if (res.ok) {
       return (await res.json()) as T;
     }
-  } catch {
-    // fallback
-  }
+  } catch {}
   return null;
 }
 
-/**
- * Fetch all categories with memory caching and fallback
- */
 export async function getCategories(): Promise<TCategory[]> {
   const now = Date.now();
   if (now - cachedCategories.timestamp < CACHE_TTL && cachedCategories.data.length > 0) {
@@ -54,9 +45,6 @@ export async function getCategories(): Promise<TCategory[]> {
   return cachedCategories.data;
 }
 
-/**
- * Fetch a single category by slug
- */
 export async function getCategoryBySlug(slug: string): Promise<TCategory | null> {
   const all = await getCategories();
   const match = all.find((c) => c.slug === slug || c.id === slug);
@@ -66,9 +54,6 @@ export async function getCategoryBySlug(slug: string): Promise<TCategory | null>
   return data || null;
 }
 
-/**
- * Fetch all products, optionally filtered by category, with memory caching
- */
 export async function getAllProducts(categorySlug?: string): Promise<TProduct[]> {
   const now = Date.now();
   let all: TProduct[] = [];
@@ -91,9 +76,6 @@ export async function getAllProducts(categorySlug?: string): Promise<TProduct[]>
   return all;
 }
 
-/**
- * Fetch a single product by numeric id or slug string
- */
 export async function getProductByIdOrSlug(idOrSlug: string | number): Promise<TProduct | null> {
   const all = await getAllProducts();
   const match = all.find(
@@ -110,9 +92,6 @@ export async function getProductByIdOrSlug(idOrSlug: string | number): Promise<T
   return null;
 }
 
-/**
- * Fetch top risers (দাম বেড়েছে ▲)
- */
 export async function getTopRisers(limit = 6): Promise<TProduct[]> {
   const all = await getAllProducts();
   return all
@@ -121,9 +100,6 @@ export async function getTopRisers(limit = 6): Promise<TProduct[]> {
     .slice(0, limit);
 }
 
-/**
- * Fetch top fallers (দাম কমেছে ▼)
- */
 export async function getTopFallers(limit = 6): Promise<TProduct[]> {
   const all = await getAllProducts();
   return all

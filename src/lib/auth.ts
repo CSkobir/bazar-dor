@@ -5,7 +5,6 @@ import { mongodbAdapter } from '@better-auth/mongo-adapter';
 import fs from 'fs';
 import path from 'path';
 
-// Check if a cloud or explicit MongoDB URI is provided
 const isCloudMongo = Boolean(
   process.env.MONGODB_URI &&
     (process.env.MONGODB_URI.startsWith('mongodb+srv://') ||
@@ -54,12 +53,10 @@ function getDatabaseAdapter() {
     }
   }
 
-  // Reuse existing global singleton across hot module reloads
   if (globalThis.__bazar_auth_db) {
     return memoryAdapter(globalThis.__bazar_auth_db as unknown as MemoryDB);
   }
 
-  // Persistent in-memory storage for seamless local development
   const DB_FILE = path.join(process.cwd(), '.auth-dev-db.json');
   const defaultDb: TMemDb = { user: [], session: [], account: [], verification: [] };
 
@@ -71,7 +68,7 @@ function getDatabaseAdapter() {
         user: Array.isArray(parsed.user) ? parsed.user.map(parseRecord) : [],
         session: Array.isArray(parsed.session) ? parsed.session.map(parseRecord) : [],
         account: Array.isArray(parsed.account) ? parsed.account.map(parseRecord) : [],
-        verification: Array.isArray(parsed.verification) ? parsed.verification.map(parseRecord) : [],
+        verification: Array.isArray(parsed.verification) ? parsed.verification : [],
       };
     }
   } catch {
@@ -80,7 +77,6 @@ function getDatabaseAdapter() {
 
   globalThis.__bazar_auth_db = rawDb;
 
-  // Auto-save on periodic interval
   if (typeof setInterval !== 'undefined') {
     const timer = setInterval(() => {
       try {

@@ -4,7 +4,6 @@ import type { NextRequest } from 'next/server';
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Check for Better Auth session token cookie
   const allCookies = request.cookies.getAll();
   const sessionCookie = allCookies.find(
     (c) =>

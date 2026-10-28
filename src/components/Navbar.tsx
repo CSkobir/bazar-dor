@@ -52,7 +52,6 @@ export default function Navbar() {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // scroll to all-products or filter
       const element = document.getElementById('সব-পণ্য');
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
@@ -63,7 +62,6 @@ export default function Navbar() {
   const [banglaDate, setBanglaDate] = useState<string>(() => getBengaliDate());
 
   useEffect(() => {
-    // Periodically sync date with client live clock
     const timer = setInterval(() => {
       setBanglaDate(getBengaliDate(new Date()));
     }, 10000);
@@ -73,9 +71,7 @@ export default function Navbar() {
 
   return (
     <header className="border-b border-slate-200/80 bg-white/95 backdrop-blur-md sticky top-0 z-50 shadow-xs">
-      {/* Top Row: Logo + Search + Auth */}
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-        {/* Brand & Live Date Indicator */}
         <Link href="/" className="flex items-center gap-3 group shrink-0">
           <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-500/10 via-teal-500/10 to-emerald-500/20 border border-emerald-200 flex items-center justify-center p-1.5 shadow-xs group-hover:scale-105 transition-all">
             <span className="text-2xl">🛒</span>
@@ -99,7 +95,6 @@ export default function Navbar() {
           </div>
         </Link>
 
-        {/* Center Search Bar */}
         <form
           onSubmit={handleSearchSubmit}
           className="hidden md:flex items-center gap-2 bg-slate-50 border border-slate-200 hover:border-emerald-400 focus-within:border-emerald-500 focus-within:bg-white rounded-full px-4 py-2 text-xs text-slate-400 transition-all w-72 lg:w-80 shadow-2xs"
@@ -117,7 +112,6 @@ export default function Navbar() {
           </kbd>
         </form>
 
-        {/* Right: Auth State Menu */}
         <div className="flex items-center gap-3 shrink-0">
           {user ? (
             <div className="relative">
@@ -143,7 +137,6 @@ export default function Navbar() {
                 </div>
               </button>
 
-              {/* User Dropdown Menu matching Figma */}
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-64 bg-white border border-slate-200 shadow-xl rounded-2xl py-2 z-50 text-xs animate-in fade-in slide-in-from-top-2">
                   <div className="px-4 py-3 border-b border-slate-100 bg-slate-50/50">
@@ -191,7 +184,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Row 2: Category Navigation Pills */}
       <div className="border-t border-slate-100 bg-slate-50/60">
         <nav className="max-w-6xl mx-auto px-4 flex items-center gap-2 overflow-x-auto py-2 text-xs font-semibold scrollbar-none">
           <Link
