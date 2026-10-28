@@ -52,18 +52,54 @@ export function formatUnit(unit: string): string {
 }
 
 /**
- * Formats date into standard Bengali date format:
- * Example: "মঙ্গলবার, ৬ অক্টোবর, ২০২৬"
+ * Formats date dynamically into standard Bengali date format.
+ * Dynamically computes weekday, day, month, and year from the live date object.
+ * Example: "বৃহস্পতিবার, ২৯ অক্টোবর, ২০২৬"
  */
-export function getBengaliDate(): string {
+export function getBengaliDate(date: Date = new Date()): string {
   try {
-    return new Date().toLocaleDateString('bn-BD', {
+    const formatted = date.toLocaleDateString('bn-BD', {
       weekday: 'long',
       day: 'numeric',
       month: 'long',
       year: 'numeric',
     });
-  } catch {
-    return 'মঙ্গলবার, ৬ অক্টোবর, ২০২৬';
-  }
+    // Check that it returned Bengali characters and not raw english
+    if (/[০-৯]/.test(formatted)) {
+      return formatted;
+    }
+  } catch {}
+
+  // Pure dynamic fallback for any environment
+  const weekdays = [
+    'রবিবার',
+    'সোমবার',
+    'মঙ্গলবার',
+    'বুধবার',
+    'বৃহস্পতিবার',
+    'শুক্রবার',
+    'শনিবার',
+  ];
+  const months = [
+    'জানুয়ারি',
+    'ফেব্রুয়ারি',
+    'মার্চ',
+    'এপ্রিল',
+    'মে',
+    'জুন',
+    'জুলাই',
+    'আগস্ট',
+    'সেপ্টেম্বর',
+    'অক্টোবর',
+    'নভেম্বর',
+    'ডিসেম্বর',
+  ];
+
+  const d = date instanceof Date && !isNaN(date.getTime()) ? date : new Date();
+  const dayName = weekdays[d.getDay()];
+  const dayNum = toBengaliNumber(d.getDate());
+  const monthName = months[d.getMonth()];
+  const yearNum = toBengaliNumber(d.getFullYear());
+
+  return `${dayName}, ${dayNum} ${monthName}, ${yearNum}`;
 }

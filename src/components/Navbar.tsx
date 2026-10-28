@@ -60,7 +60,16 @@ export default function Navbar() {
     }
   };
 
-  const banglaDate = getBengaliDate();
+  const [banglaDate, setBanglaDate] = useState<string>(() => getBengaliDate());
+
+  useEffect(() => {
+    // Periodically sync date with client live clock
+    const timer = setInterval(() => {
+      setBanglaDate(getBengaliDate(new Date()));
+    }, 10000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <header className="border-b border-slate-200/80 bg-white/95 backdrop-blur-md sticky top-0 z-50 shadow-xs">
