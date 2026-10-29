@@ -91,14 +91,30 @@ function getDatabaseAdapter() {
   return memoryAdapter(rawDb as unknown as MemoryDB);
 }
 
+const appUrl = process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_BETTER_AUTH_URL || 'http://localhost:3000';
+
+// Build trusted origins — always include localhost for dev, plus the
+// deployed URL (and any Vercel preview URLs) from environment variables.
+const extraOrigins: string[] = [];
+if (process.env.VERCEL_URL) {
+  extraOrigins.push(`https://${process.env.VERCEL_URL}`);
+}
+if (process.env.NEXT_PUBLIC_BETTER_AUTH_URL) {
+  extraOrigins.push(process.env.NEXT_PUBLIC_BETTER_AUTH_URL);
+}
+if (process.env.BETTER_AUTH_URL) {
+  extraOrigins.push(process.env.BETTER_AUTH_URL);
+}
+
 export const auth = betterAuth({
   secret: process.env.BETTER_AUTH_SECRET || 'bazar_dor_development_super_secret_key_2026_xyz',
-  baseURL: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
+  baseURL: appUrl,
   trustedOrigins: [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
     'http://localhost:3001',
     'http://127.0.0.1:3001',
+    ...extraOrigins,
   ],
   emailAndPassword: {
     enabled: true,
