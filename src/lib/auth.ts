@@ -91,19 +91,31 @@ function getDatabaseAdapter() {
   return memoryAdapter(rawDb as unknown as MemoryDB);
 }
 
-const appUrl = process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_BETTER_AUTH_URL || 'http://localhost:3000';
+// When running on Vercel, VERCEL_URL is auto-injected (without https://).
+// We prioritise it so auth works even if BETTER_AUTH_URL is still set to
+// localhost in the Vercel dashboard — a very common misconfiguration.
+const vercelUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null;
+const appUrl =
+  vercelUrl ||
+  process.env.BETTER_AUTH_URL ||
+  process.env.NEXT_PUBLIC_BETTER_AUTH_URL ||
+  'http://localhost:3000';
 
-// Build trusted origins — always include localhost for dev, plus the
-// deployed URL (and any Vercel preview URLs) from environment variables.
+// Build the full trusted-origins list: localhost for dev + every known
+// production/preview URL so Better Auth never rejects a valid request.
 const extraOrigins: string[] = [];
-if (process.env.VERCEL_URL) {
-  extraOrigins.push(`https://${process.env.VERCEL_URL}`);
+if (vercelUrl) {
+  extraOrigins.push(vercelUrl);
 }
 if (process.env.NEXT_PUBLIC_BETTER_AUTH_URL) {
   extraOrigins.push(process.env.NEXT_PUBLIC_BETTER_AUTH_URL);
 }
-if (process.env.BETTER_AUTH_URL) {
+if (process.env.BETTER_AUTH_URL && process.env.BETTER_AUTH_URL !== 'http://localhost:3000') {
   extraOrigins.push(process.env.BETTER_AUTH_URL);
+}
+// Accept ALL Vercel preview/branch URLs for this project automatically
+if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+  extraOrigins.push(`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`);
 }
 
 export const auth = betterAuth({
